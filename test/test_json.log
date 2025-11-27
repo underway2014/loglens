@@ -1,0 +1,118 @@
+{"timestamp":"2025-05-20T00:00:00.000Z","level":"INFO","message":"Application started successfully","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T00:01:05.234Z","level":"INFO","message":"User login: \"admin\" from IP 192.168.1.100","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:02:18.765Z","level":"WARNING","message":"High memory usage: 85% (threshold: 80%)","host":"app-server-01","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:03:45.123Z","level":"INFO","message":"Database connection established","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T00:04:59.876Z","level":"ERROR","message":"Failed to connect to payment gateway: \"Timeout after 5000ms\"","host":"app-server-03","service":"payment-service"}
+{"timestamp":"2025-05-20T00:05:32.456Z","level":"INFO","message":"User session created: session-abc123","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:06:15.678Z","level":"WARNING","message":"Disk space low: 15% remaining","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T00:07:42.901Z","level":"INFO","message":"Cache cleared successfully","host":"app-server-03","service":"cache"}
+{"timestamp":"2025-05-20T00:08:23.345Z","level":"INFO","message":"Processing request: GET /api/v1/users","host":"app-server-02","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:09:56.789Z","level":"ERROR","message":"Invalid API key: \"invalid-key-123\"","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T00:10:12.456Z","level":"INFO","message":"User profile updated: user-456","host":"app-server-02","service":"user-service"}
+{"timestamp":"2025-05-20T00:11:34.567Z","level":"WARNING","message":"Slow response: 2.3s (threshold: 1s)","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:12:45.678Z","level":"INFO","message":"File uploaded: report_20250520.pdf","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T00:13:59.876Z","level":"INFO","message":"Application health check: OK","host":"app-server-02","service":"health-check"}
+{"timestamp":"2025-05-20T00:14:33.210Z","level":"ERROR","message":"Database query failed: \"SELECT * FROM users WHERE id=123\"","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T00:15:47.567Z","level":"INFO","message":"User logged out: admin","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:16:22.890Z","level":"WARNING","message":"Network latency: 120ms (threshold: 100ms)","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:17:55.123Z","level":"INFO","message":"Scheduled task: daily report generation","host":"app-server-01","service":"scheduler"}
+{"timestamp":"2025-05-20T00:18:31.456Z","level":"INFO","message":"Configuration loaded: prod-env","host":"app-server-02","service":"config-service"}
+{"timestamp":"2025-05-20T00:19:10.789Z","level":"WARNING","message":"CPU usage: 92% (threshold: 85%)","host":"app-server-01","service":"system-monitor"}
+{"timestamp":"2025-05-20T00:20:45.321Z","level":"INFO","message":"Session timeout: session-abc123","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:21:56.678Z","level":"ERROR","message":"File not found: /data/reports/report_20250520.pdf","host":"app-server-03","service":"storage"}
+{"timestamp":"2025-05-20T00:22:33.901Z","level":"INFO","message":"User registration: new-user@domain.com","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T00:23:12.456Z","level":"WARNING","message":"Memory leak detected: 500MB increase","host":"app-server-02","service":"memory-monitor"}
+{"timestamp":"2025-05-20T00:24:59.876Z","level":"INFO","message":"Backup completed successfully","host":"app-server-03","service":"backup"}
+{"timestamp":"2025-05-20T00:25:45.234Z","level":"INFO","message":"User login: \"guest\" from IP 10.0.0.5","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:26:22.678Z","level":"ERROR","message":"Payment processing failed: \"Invalid card number\"","host":"app-server-01","service":"payment-service"}
+{"timestamp":"2025-05-20T00:27:15.345Z","level":"INFO","message":"Service restarted: api-gateway","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:28:45.678Z","level":"WARNING","message":"Disk I/O high: 95% utilization","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T00:29:32.901Z","level":"INFO","message":"User preferences updated","host":"app-server-02","service":"user-service"}
+{"timestamp":"2025-05-20T00:30:15.234Z","level":"INFO","message":"Application version: 2.3.1","host":"app-server-01","service":"system"}
+{"timestamp":"2025-05-20T00:31:59.876Z","level":"ERROR","message":"Authentication failed: \"Invalid credentials\"","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:32:45.123Z","level":"WARNING","message":"Request timeout: 3000ms (threshold: 2000ms)","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:33:33.456Z","level":"INFO","message":"File deleted: old_report.pdf","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T00:34:22.789Z","level":"INFO","message":"User activity logged: admin","host":"app-server-02","service":"audit"}
+{"timestamp":"2025-05-20T00:35:10.123Z","level":"WARNING","message":"Network connection lost: 10.0.0.1","host":"app-server-03","service":"network"}
+{"timestamp":"2025-05-20T00:36:45.678Z","level":"INFO","message":"System update applied","host":"app-server-01","service":"system"}
+{"timestamp":"2025-05-20T00:37:33.901Z","level":"ERROR","message":"Database connection timeout","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T00:38:22.234Z","level":"INFO","message":"User session active: session-xyz789","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:39:15.567Z","level":"WARNING","message":"High request rate: 1200 req/min","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:40:59.876Z","level":"INFO","message":"Configuration change: logging level set to DEBUG","host":"app-server-01","service":"config-service"}
+{"timestamp":"2025-05-20T00:41:45.234Z","level":"INFO","message":"User login: \"user-123\" from IP 172.16.0.2","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:42:33.678Z","level":"WARNING","message":"Memory usage: 78% (threshold: 80%)","host":"app-server-01","service":"system-monitor"}
+{"timestamp":"2025-05-20T00:43:22.901Z","level":"INFO","message":"File downloaded: data_export.csv","host":"app-server-03","service":"storage"}
+{"timestamp":"2025-05-20T00:44:15.345Z","level":"INFO","message":"Service health: all components OK","host":"app-server-02","service":"health-check"}
+{"timestamp":"2025-05-20T00:45:59.876Z","level":"ERROR","message":"File processing failed: \"Invalid format\"","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T00:46:45.234Z","level":"INFO","message":"User account created: user-456","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:47:33.678Z","level":"WARNING","message":"CPU usage: 88% (threshold: 85%)","host":"app-server-03","service":"system-monitor"}
+{"timestamp":"2025-05-20T00:48:22.901Z","level":"INFO","message":"Application shutdown initiated","host":"app-server-01","service":"system"}
+{"timestamp":"2025-05-20T00:49:15.345Z","level":"INFO","message":"User logout: user-123","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T00:50:59.876Z","level":"ERROR","message":"Database write failed: \"Duplicate key\"","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T00:51:45.234Z","level":"INFO","message":"Backup started: full system backup","host":"app-server-03","service":"backup"}
+{"timestamp":"2025-05-20T00:52:33.678Z","level":"WARNING","message":"Network latency: 150ms (threshold: 100ms)","host":"app-server-01","service":"network"}
+{"timestamp":"2025-05-20T00:53:22.901Z","level":"INFO","message":"Configuration updated: max_connections=100","host":"app-server-02","service":"config-service"}
+{"timestamp":"2025-05-20T00:54:15.345Z","level":"INFO","message":"User session created: session-def456","host":"app-server-03","service":"auth-service"}
+{"timestamp":"2025-05-20T00:55:59.876Z","level":"ERROR","message":"Payment gateway unavailable","host":"app-server-01","service":"payment-service"}
+{"timestamp":"2025-05-20T00:56:45.234Z","level":"INFO","message":"Service restarted: user-service","host":"app-server-02","service":"user-service"}
+{"timestamp":"2025-05-20T00:57:33.678Z","level":"WARNING","message":"Disk space: 20% remaining","host":"app-server-03","service":"storage"}
+{"timestamp":"2025-05-20T00:58:22.901Z","level":"INFO","message":"Request processed: POST /api/v1/login","host":"app-server-01","service":"api-gateway"}
+{"timestamp":"2025-05-20T00:59:15.345Z","level":"INFO","message":"Application started successfully","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T01:00:59.876Z","level":"WARNING","message":"Memory usage: 82% (threshold: 80%)","host":"app-server-01","service":"system-monitor"}
+{"timestamp":"2025-05-20T01:01:45.234Z","level":"INFO","message":"User login: \"admin\" from IP 192.168.1.100","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T01:02:33.678Z","level":"ERROR","message":"Failed to connect to payment gateway: \"Timeout after 5000ms\"","host":"app-server-03","service":"payment-service"}
+{"timestamp":"2025-05-20T01:03:22.901Z","level":"INFO","message":"User session created: session-abc123","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:04:15.345Z","level":"WARNING","message":"High memory usage: 85% (threshold: 80%)","host":"app-server-02","service":"system-monitor"}
+{"timestamp":"2025-05-20T01:05:59.876Z","level":"INFO","message":"Database connection established","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T01:06:45.234Z","level":"INFO","message":"Processing request: GET /api/v1/users","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T01:07:33.678Z","level":"ERROR","message":"Invalid API key: \"invalid-key-123\"","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:08:22.901Z","level":"INFO","message":"User profile updated: user-456","host":"app-server-02","service":"user-service"}
+{"timestamp":"2025-05-20T01:09:15.345Z","level":"WARNING","message":"Slow response: 2.3s (threshold: 1s)","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T01:10:59.876Z","level":"INFO","message":"File uploaded: report_20250520.pdf","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T01:11:45.234Z","level":"INFO","message":"Application health check: OK","host":"app-server-02","service":"health-check"}
+{"timestamp":"2025-05-20T01:12:33.678Z","level":"ERROR","message":"Database query failed: \"SELECT * FROM users WHERE id=123\"","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T01:13:22.901Z","level":"INFO","message":"User logged out: admin","host":"app-server-03","service":"auth-service"}
+{"timestamp":"2025-05-20T01:14:15.345Z","level":"WARNING","message":"Network latency: 120ms (threshold: 100ms)","host":"app-server-01","service":"network"}
+{"timestamp":"2025-05-20T01:15:59.876Z","level":"INFO","message":"Scheduled task: daily report generation","host":"app-server-02","service":"scheduler"}
+{"timestamp":"2025-05-20T01:16:45.234Z","level":"INFO","message":"Configuration loaded: prod-env","host":"app-server-03","service":"config-service"}
+{"timestamp":"2025-05-20T01:17:33.678Z","level":"WARNING","message":"CPU usage: 92% (threshold: 85%)","host":"app-server-01","service":"system-monitor"}
+{"timestamp":"2025-05-20T01:18:22.901Z","level":"INFO","message":"Session timeout: session-abc123","host":"app-server-02","service":"auth-service"}
+{"timestamp":"2025-05-20T01:19:15.345Z","level":"ERROR","message":"File not found: /data/reports/report_20250520.pdf","host":"app-server-03","service":"storage"}
+{"timestamp":"2025-05-20T01:20:59.876Z","level":"INFO","message":"User registration: new-user@domain.com","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:21:45.234Z","level":"WARNING","message":"Memory leak detected: 501MB increase","host":"app-server-02","service":"memory-monitor"}
+{"timestamp":"2025-05-20T01:22:33.678Z","level":"INFO","message":"Backup completed successfully","host":"app-server-03","service":"backup"}
+{"timestamp":"2025-05-20T01:23:22.901Z","level":"INFO","message":"User login: \"guest\" from IP 10.0.0.5","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:24:15.345Z","level":"ERROR","message":"Payment processing failed: \"Invalid card number\"","host":"app-server-02","service":"payment-service"}
+{"timestamp":"2025-05-20T01:25:59.876Z","level":"INFO","message":"Service restarted: api-gateway","host":"app-server-03","service":"api-gateway"}
+{"timestamp":"2025-05-20T01:26:45.234Z","level":"WARNING","message":"Disk I/O high: 95% utilization","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T01:27:33.678Z","level":"INFO","message":"User preferences updated","host":"app-server-02","service":"user-service"}
+{"timestamp":"2025-05-20T01:28:22.901Z","level":"INFO","message":"Application version: 2.3.1","host":"app-server-03","service":"system"}
+{"timestamp":"2025-05-20T01:29:15.345Z","level":"ERROR","message":"Authentication failed: \"Invalid credentials\"","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:30:59.876Z","level":"WARNING","message":"Request timeout: 3000ms (threshold: 2000ms)","host":"app-server-02","service":"api-gateway"}
+{"timestamp":"2025-05-20T01:31:45.234Z","level":"INFO","message":"File deleted: old_report.pdf","host":"app-server-03","service":"storage"}
+{"timestamp":"2025-05-20T01:32:33.678Z","level":"INFO","message":"User activity logged: admin","host":"app-server-01","service":"audit"}
+{"timestamp":"2025-05-20T01:33:22.901Z","level":"WARNING","message":"Network connection lost: 10.0.0.1","host":"app-server-02","service":"network"}
+{"timestamp":"2025-05-20T01:34:15.345Z","level":"INFO","message":"System update applied","host":"app-server-03","service":"system"}
+{"timestamp":"2025-05-20T01:35:59.876Z","level":"ERROR","message":"Database connection timeout","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T01:36:45.234Z","level":"INFO","message":"User session active: session-xyz789","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:37:33.678Z","level":"WARNING","message":"High request rate: 1200 req/min","host":"app-server-02","service":"api-gateway"}
+{"timestamp":"2025-05-20T01:38:22.901Z","level":"INFO","message":"Configuration change: logging level set to DEBUG","host":"app-server-03","service":"config-service"}
+{"timestamp":"2025-05-20T01:39:15.345Z","level":"INFO","message":"User login: \"user-123\" from IP 172.16.0.2","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:40:59.876Z","level":"WARNING","message":"Memory usage: 78% (threshold: 80%)","host":"app-server-02","service":"system-monitor"}
+{"timestamp":"2025-05-20T01:41:45.234Z","level":"INFO","message":"File downloaded: data_export.csv","host":"app-server-03","service":"storage"}
+{"timestamp":"2025-05-20T01:42:33.678Z","level":"INFO","message":"Service health: all components OK","host":"app-server-01","service":"health-check"}
+{"timestamp":"2025-05-20T01:43:22.901Z","level":"ERROR","message":"File processing failed: \"Invalid format\"","host":"app-server-02","service":"storage"}
+{"timestamp":"2025-05-20T01:44:15.345Z","level":"INFO","message":"User account created: user-456","host":"app-server-03","service":"auth-service"}
+{"timestamp":"2025-05-20T01:45:59.876Z","level":"WARNING","message":"CPU usage: 88% (threshold: 85%)","host":"app-server-01","service":"system-monitor"}
+{"timestamp":"2025-05-20T01:46:45.234Z","level":"INFO","message":"Application shutdown initiated","host":"app-server-02","service":"system"}
+{"timestamp":"2025-05-20T01:47:33.678Z","level":"INFO","message":"User logout: user-123","host":"app-server-03","service":"auth-service"}
+{"timestamp":"2025-05-20T01:48:22.901Z","level":"ERROR","message":"Database write failed: \"Duplicate key\"","host":"db-server-01","service":"database"}
+{"timestamp":"2025-05-20T01:49:15.345Z","level":"INFO","message":"Backup started: full system backup","host":"app-server-01","service":"backup"}
+{"timestamp":"2025-05-20T01:50:59.876Z","level":"WARNING","message":"Network latency: 150ms (threshold: 100ms)","host":"app-server-02","service":"network"}
+{"timestamp":"2025-05-20T01:51:45.234Z","level":"INFO","message":"Configuration updated: max_connections=100","host":"app-server-03","service":"config-service"}
+{"timestamp":"2025-05-20T01:52:33.678Z","level":"INFO","message":"User session created: session-def456","host":"app-server-01","service":"auth-service"}
+{"timestamp":"2025-05-20T01:53:22.901Z","level":"ERROR","message":"Payment gateway unavailable","host":"app-server-02","service":"payment-service"}
+{"timestamp":"2025-05-20T01:54:15.345Z","level":"INFO","message":"Service restarted: user-service","host":"app-server-03","service":"user-service"}
+{"timestamp":"2025-05-20T01:55:59.876Z","level":"WARNING","message":"Disk space: 20% remaining","host":"app-server-01","service":"storage"}
+{"timestamp":"2025-05-20T01:56:45.234Z","level":"INFO","message":"Request processed: POST /api/v1/login","host":"app-server-02","service":"api-gateway"}
+{"timestamp":"2025-05-20T01:57:33.678Z","level":"INFO","message":"Application started successfully","host":"app-server-03","service":"auth-service"}

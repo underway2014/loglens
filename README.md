@@ -18,29 +18,7 @@
 
 ### 二进制发布版（推荐）
 
-从 [GitHub Releases](https://github.com/YOUR_USERNAME/loglens/releases) 下载预编译的二进制文件：
-
-```bash
-# Linux AMD64
-wget https://github.com/YOUR_USERNAME/loglens/releases/latest/download/lg-VERSION-linux-amd64.tar.gz
-tar -xzf lg-VERSION-linux-amd64.tar.gz
-sudo mv lg-linux-amd64 /usr/local/bin/lg
-
-# macOS AMD64 (Intel)
-wget https://github.com/YOUR_USERNAME/loglens/releases/latest/download/lg-VERSION-darwin-amd64.tar.gz
-tar -xzf lg-VERSION-darwin-amd64.tar.gz
-sudo mv lg-darwin-amd64 /usr/local/bin/lg
-
-# macOS ARM64 (Apple Silicon)
-wget https://github.com/YOUR_USERNAME/loglens/releases/latest/download/lg-VERSION-darwin-arm64.tar.gz
-tar -xzf lg-VERSION-darwin-arm64.tar.gz
-sudo mv lg-darwin-arm64 /usr/local/bin/lg
-
-# Windows (PowerShell)
-Invoke-WebRequest -Uri "https://github.com/YOUR_USERNAME/loglens/releases/latest/download/lg-VERSION-windows-amd64.zip" -OutFile "lg.zip"
-Expand-Archive lg.zip
-Move-Item lg\lg-windows-amd64.exe C:\Windows\System32\lg.exe
-```
+从 [GitHub Releases](https://github.com/underway2014/loglens/releases) 下载预编译的二进制文件,重命名为lg放到系统对应的可执行目录
 
 ## 使用方法
 
