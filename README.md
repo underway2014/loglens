@@ -35,13 +35,13 @@ lg -h
 lg app.log
 
 # 显示行号
-lg app.log -l
+lg -l app.log
 
 # 替换转义符（适合 JSON 日志）
-lg app.log -u -k
+lg -u -k app.log
 
 # 全功能模式：行号 + 转义符替换
-lg app.log -l -u -k
+lg -l -u -k app.log
 
 # 从管道读取并替换转义符
 cat app.log | lg -u
@@ -96,10 +96,10 @@ tail -n 100 app.log | lg -u   # 查看最后 100 行
 lg large.log
 
 # 带行号
-lg large.log -l
+lg -l large.log
 
 # 处理 JSON 日志
-lg app.log -u -k
+lg -u -k app.log
 ```
 
 在交互模式下：
@@ -192,7 +192,7 @@ lg app.log -u -k
 
 ```bash
 # 显示行号
-lg app.log -l
+lg -l app.log
 ```
 
 行号格式为右对齐 6 位数字，方便阅读。
@@ -219,7 +219,7 @@ lg test.log
 
 **使用 `-u` 参数：**
 ```bash
-lg test.log -u
+lg -u test.log
 ```
 输出（替换转义符）：
 ```
@@ -231,7 +231,7 @@ Retrying...
 
 **使用 `-u -k` 参数（保持单行）：**
 ```bash
-lg test.log -u -k
+lg -u -k test.log
 ```
 输出（替换转义符但保持单行）：
 ```
@@ -255,7 +255,7 @@ lg test.log -u -k
 
 1. **查看包含转义符的 JSON 日志**
    ```bash
-   lg app.log -u -k
+   lg -u -k app.log
    ```
 
 2. **搜索错误日志**
@@ -265,7 +265,7 @@ lg test.log -u -k
 
 3. **格式化 JSON 日志**
    ```bash
-   lg app.log -u           # 进入交互模式，按 f 键格式化当前行
+   lg -u app.log           # 进入交互模式，按 f 键格式化当前行
    # 或者使用命令：:f 格式化当前行，:f5 格式化第5行
    ```
 
