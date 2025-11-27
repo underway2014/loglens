@@ -10,7 +10,6 @@ import (
 	"os/signal"
 	"strconv"
 	"strings"
-	"syscall"
 
 	"golang.org/x/term"
 )
@@ -308,7 +307,7 @@ func interactiveMode(filePath string) error {
 
 	// 监听窗口大小变化信号
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGWINCH)
+	setupSignalHandler(sigChan)
 	defer signal.Stop(sigChan)
 
 	// 用于标记是否需要重新显示
