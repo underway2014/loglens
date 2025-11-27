@@ -1,0 +1,37 @@
+# 可执行文件
+lg
+lg_debug
+lg_optimized
+lg-*
+
+# 构建目录
+dist/
+build/
+
+# Go 构建文件
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 测试文件
+*.test
+*.out
+
+# Go 工作区文件
+go.work
+
+# IDE 文件
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# 临时文件
+tmp/
+*.log
