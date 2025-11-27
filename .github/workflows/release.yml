@@ -36,23 +36,46 @@ jobs:
           # 构建标志
           LDFLAGS="-s -w -X main.version=${{ steps.version.outputs.VERSION }}"
           
+          # 禁用 CGO 以确保静态链接和跨平台兼容性
+          export CGO_ENABLED=0
+          
           # Linux AMD64
+          echo "Building Linux AMD64..."
           GOOS=linux GOARCH=amd64 go build -ldflags="$LDFLAGS" -o dist/lg-linux-amd64
           
           # Linux ARM64
+          echo "Building Linux ARM64..."
           GOOS=linux GOARCH=arm64 go build -ldflags="$LDFLAGS" -o dist/lg-linux-arm64
           
           # macOS AMD64 (Intel)
+          echo "Building macOS AMD64..."
           GOOS=darwin GOARCH=amd64 go build -ldflags="$LDFLAGS" -o dist/lg-darwin-amd64
           
           # macOS ARM64 (Apple Silicon)
+          echo "Building macOS ARM64..."
           GOOS=darwin GOARCH=arm64 go build -ldflags="$LDFLAGS" -o dist/lg-darwin-arm64
           
           # Windows AMD64
+          echo "Building Windows AMD64..."
           GOOS=windows GOARCH=amd64 go build -ldflags="$LDFLAGS" -o dist/lg-windows-amd64.exe
           
           # Windows ARM64
+          echo "Building Windows ARM64..."
           GOOS=windows GOARCH=arm64 go build -ldflags="$LDFLAGS" -o dist/lg-windows-arm64.exe
+          
+          # 显示构建结果
+          echo "Build completed:"
+          ls -lh dist/
+
+      - name: Verify builds
+        run: |
+          echo "Verifying binary formats..."
+          file dist/lg-linux-amd64
+          file dist/lg-linux-arm64
+          file dist/lg-darwin-amd64
+          file dist/lg-darwin-arm64
+          file dist/lg-windows-amd64.exe
+          file dist/lg-windows-arm64.exe
 
       - name: Create archives
         run: |
