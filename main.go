@@ -16,22 +16,47 @@ import (
 
 // 命令行参数
 var (
-	filePath     string
-	unescapeFlag bool
-	helpFlag     bool
-	keepOneLine  bool
-	trimSpace    bool
+	filePath      string
+	unescapeFlag  bool
+	helpFlag      bool
+	keepOneLine   bool
+	trimSpace     bool
+	lineNumColor  string // 行号颜色 (ANSI 其它色也一样)
+	searchHlColor string // 搜索高亮颜色
 )
 
 // 命令行参数描述常量
 const (
-	descFilePath    = "日志文件路径"
-	descUnescape    = "是否替换转义符(如 \\n, \\t, \\r 等)"
-	descLineNumber  = "显示行号"
-	descKeepOneLine = "替换转义符时保持每条日志在一行(将\\n替换为空格)"
-	descTrimSpace   = "修剪每行开头和结尾的空白字符"
-	descHelp        = "显示帮助信息"
+	descFilePath      = "日志文件路径"
+	descUnescape      = "是否替换转义符(如 \\n, \\t, \\r 等)"
+	descLineNumber    = "显示行号"
+	descKeepOneLine   = "替换转义符时保持每条日志在一行(将\\n替换为空格)"
+	descTrimSpace     = "修剪每行开头和结尾的空白字符"
+	descHelp          = "显示帮助信息"
+	descLineNumColor  = "行号颜色"
+	descSearchHlColor = "搜索高亮颜色"
 )
+
+// 预设颜色映射表（前景色）
+var lineNumColorMap = map[string]string{
+	"red":     "31",
+	"green":   "32",
+	"yellow":  "33",
+	"blue":    "34",
+	"magenta": "35",
+	"cyan":    "36",
+	"white":   "37",
+}
+
+// 预设颜色映射表（背景色）
+var searchHlColorMap = map[string]string{
+	"red":     "41;37", // 红色背景 + 白色文字
+	"green":   "42;30", // 绿色背景 + 黑色文字
+	"yellow":  "43;30", // 黄色背景 + 黑色文字
+	"blue":    "44;37", // 蓝色背景 + 白色文字
+	"magenta": "45;37", // 品红背景 + 白色文字
+	"cyan":    "46;30", // 青色背景 + 黑色文字
+}
 
 // 错误消息常量
 const (
@@ -76,6 +101,8 @@ func init() {
 	flag.BoolVar(&keepOneLine, "keep-one-line", false, descKeepOneLine)
 	flag.BoolVar(&trimSpace, "t", false, descTrimSpace)
 	flag.BoolVar(&trimSpace, "trim", false, descTrimSpace)
+	flag.StringVar(&lineNumColor, "line-color", "cyan", descLineNumColor)
+	flag.StringVar(&searchHlColor, "search-color", "yellow", descSearchHlColor)
 	flag.BoolVar(&helpFlag, "h", false, descHelp)
 	flag.BoolVar(&helpFlag, "help", false, descHelp)
 }
@@ -91,8 +118,32 @@ func exitWithError(format string, args ...interface{}) {
 	os.Exit(1)
 }
 
+// convertLineNumColor 转换行号颜色名称为ANSI代码
+func convertLineNumColor(colorName string) string {
+	// 先检查是否是预设颜色名称
+	if ansiCode, ok := lineNumColorMap[colorName]; ok {
+		return ansiCode
+	}
+	// 如果不是预设名称，不学会是 ANSI 代码，直接返回
+	return colorName
+}
+
+// convertSearchHlColor 转换搜索高亮颜色名称为ANSI代码
+func convertSearchHlColor(colorName string) string {
+	// 先检查是否是预设颜色名称
+	if ansiCode, ok := searchHlColorMap[colorName]; ok {
+		return ansiCode
+	}
+	// 如果不是预设名称，学会是 ANSI 代码，直接返回
+	return colorName
+}
+
 func main() {
 	flag.Parse()
+
+	// 转换颜色名称为ANSI代码
+	lineNumColor = convertLineNumColor(lineNumColor)
+	searchHlColor = convertSearchHlColor(searchHlColor)
 
 	// 显示帮助信息
 	if helpFlag {
@@ -156,8 +207,8 @@ func processStream(reader io.Reader) error {
 		if unescapeFlag {
 			line = unescapeString(line)
 		}
-		// 使用青色（Cyan）显示行号
-		fmt.Printf("\033[36m%6d\033[0m  %s\n", lineNum, line)
+		// 使用配置的颜色显示行号
+		fmt.Printf("\033[%sm%6d\033[0m  %s\n", lineNumColor, lineNum, line)
 
 		lineNum++
 	}
@@ -197,7 +248,7 @@ func formatJSONLine(line string) (string, error) {
 }
 
 // showFormattedJSON 在独立页面显示格式化的 JSON
-func showFormattedJSON(filePath string, lineIndex []int64, lineNum int, width int) error {
+func showFormattedJSON(filePath string, lineIndex []int64, lineNum int) error {
 	// 读取指定行的内容
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -411,14 +462,14 @@ func interactiveMode(filePath string) error {
 						lineNumStr := strings.TrimPrefix(cmd, "f")
 						if lineNumStr == "" {
 							// 如果没有指定行号，使用当前行
-							err := showFormattedJSON(filePath, lineIndex, currentLine, width)
+							err := showFormattedJSON(filePath, lineIndex, currentLine)
 							if err != nil {
 								// 如果出错，仅记录错误但不退出程序
 							}
 						} else if lineNum, err := strconv.Atoi(lineNumStr); err == nil {
 							if lineNum > 0 && lineNum <= totalLines {
 								// 格式化指定行（转为 0 基索引）
-								err := showFormattedJSON(filePath, lineIndex, lineNum-1, width)
+								err := showFormattedJSON(filePath, lineIndex, lineNum-1)
 								if err != nil {
 									// 如果出错，仅记录错误但不退出程序
 								}
@@ -622,7 +673,7 @@ func interactiveMode(filePath string) error {
 			lastDisplayedLine = lastLine
 		case 'f', 'F': // f - 格式化当前行的 JSON
 			// 显示 JSON 格式化页面
-			err := showFormattedJSON(filePath, lineIndex, currentLine, width)
+			err := showFormattedJSON(filePath, lineIndex, currentLine)
 			if err != nil {
 				// 如果出错，仅记录错误但不退出程序
 				// 可以在这里显示错误信息
@@ -756,7 +807,7 @@ func displayPage(filePath string, lineIndex []int64, startLine, totalLines, view
 		// 计算这一行显示时会占用多少终端行
 		// 行号占用的宽度（如果显示行号）
 		linePrefix := ""
-		linePrefix = fmt.Sprintf("\033[36m%6d\033[0m  ", i+1)
+		linePrefix = fmt.Sprintf("\033[%sm%6d\033[0m  ", lineNumColor, i+1)
 
 		// 计算内容宽度（考虑行号前缀的显示宽度，ANSI颜色码不占宽度）
 		prefixWidth := 8 // "  1234  " 的可见宽度
@@ -826,13 +877,16 @@ func showHelp() {
 	fmt.Println("  -u, --unescape           替换转义符（\\n, \\t, \\r 等）")
 	fmt.Println("  -k, --keep-one-line      配合 -u 使用，保持每条日志在一行（\\n替换为空格）")
 	fmt.Println("  -t, --trim               修剪每行开头和结尾的空白字符")
+	fmt.Println("  --line-color <code>      行号颜色 (默认: cyan, 选项: red, green, yellow, blue, magenta, white)")
+	fmt.Println("  --search-color <code>    搜索高亮颜色 (默认: yellow, 选项: red, green, yellow, blue, magenta, cyan)")
 	fmt.Println("  -h, --help               显示帮助信息")
 	fmt.Println()
 	fmt.Println("示例:")
-	fmt.Println("  lg app.log                        # 交互式查看 app.log（直接传文件路径）")
-	fmt.Println("  lg -l app.log                     # 交互式查看并显示行号")
-	fmt.Println("  lg -u -k app.log                  # 交互式查看并替换转义符（保持单行）")
-	fmt.Println("  cat app.log | lg -u               # 从管道读取并替换转义符")
+	fmt.Println("  lg app.log                        # 交互式查看 app.log。直接传文件路径）")
+	fmt.Println("  lg -l app.log                             # 交互式查看並显示行号")
+	fmt.Println("  lg -l --line-color green app.log          # 使用绿色行号")
+	fmt.Println("  lg -l --search-color blue app.log         # 使用蓝色背景搜索高亮")
+	fmt.Println("  cat app.log | lg -u               # 从管道读取並替换转义符")
 	fmt.Println("  lg app.log > output.txt           # 输出重定向（自动使用非交互模式）")
 	fmt.Println()
 	fmt.Println("交互式模式命令:")
@@ -924,7 +978,7 @@ func highlightMatches(line string, pattern string) string {
 
 		// 添加高亮的匹配部分（保持原始大小写）
 		matchedText := line[actualIdx : actualIdx+len(pattern)]
-		result += "\033[43;30m" + matchedText + "\033[0m"
+		result += fmt.Sprintf("\033[%sm%s\033[0m", searchHlColor, matchedText)
 
 		lastIdx = actualIdx + len(pattern)
 	}
