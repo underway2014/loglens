@@ -16,30 +16,79 @@ import (
 
 // 命令行参数
 var (
-	filePath        string
-	unescapeFlag    bool
-	helpFlag        bool
-	interactiveFlag bool
-	showLineNumber  bool
-	keepOneLine     bool
-	trimSpace       bool
+	filePath     string
+	unescapeFlag bool
+	helpFlag     bool
+	keepOneLine  bool
+	trimSpace    bool
+)
+
+// 命令行参数描述常量
+const (
+	descFilePath    = "日志文件路径"
+	descUnescape    = "是否替换转义符(如 \\n, \\t, \\r 等)"
+	descLineNumber  = "显示行号"
+	descKeepOneLine = "替换转义符时保持每条日志在一行(将\\n替换为空格)"
+	descTrimSpace   = "修剪每行开头和结尾的空白字符"
+	descHelp        = "显示帮助信息"
+)
+
+// 错误消息常量
+const (
+	errMsgOpenFile = "无法打开文件 %s: %v"
+	errMsgReadFile = "读取文件错误: %v"
+	errMsgGeneric  = "错误: %v"
+)
+
+// Scanner 配置常量
+const (
+	// maxScanTokenSize 设置 Scanner 最大缓冲区大小为 5MB
+	// 用于处理可能包含超长行的日志文件（如大型 JSON 对象）
+	maxScanTokenSize = 5 * 1024 * 1024 // 5MB
+)
+
+// 字符串转义替换器（用于 unescapeString 函数）
+var (
+	// escapeReplacerKeepOneLine 保持单行模式的转义符替换器（\n 替换为空格）
+	escapeReplacerKeepOneLine = strings.NewReplacer(
+		"\\t", "\t",
+		"\\r", "",
+		"\\n", " ", // 替换为空格
+		"\\\\", "\\",
+		"\\\"", "\"",
+		"\\'", "'",
+	)
+	// escapeReplacerNormal 正常模式的转义符替换器（\n 替换为换行符）
+	escapeReplacerNormal = strings.NewReplacer(
+		"\\n", "\n",
+		"\\t", "\t",
+		"\\r", "\r",
+		"\\\\", "\\",
+		"\\\"", "\"",
+		"\\'", "'",
+	)
 )
 
 func init() {
-	flag.StringVar(&filePath, "f", "", "日志文件路径")
-	flag.StringVar(&filePath, "file", "", "日志文件路径")
-	flag.BoolVar(&unescapeFlag, "u", false, "是否替换转义符（如 \\n, \\t, \\r 等）")
-	flag.BoolVar(&unescapeFlag, "unescape", false, "是否替换转义符（如 \\n, \\t, \\r 等）")
-	flag.BoolVar(&interactiveFlag, "i", false, "交互式分页查看模式（默认已启用，此选项保留以兼容）")
-	flag.BoolVar(&interactiveFlag, "interactive", false, "交互式分页查看模式（默认已启用，此选项保留以兼容）")
-	flag.BoolVar(&showLineNumber, "l", false, "显示行号")
-	flag.BoolVar(&showLineNumber, "line-number", false, "显示行号")
-	flag.BoolVar(&keepOneLine, "k", false, "替换转义符时保持每条日志在一行（将\\n替换为空格）")
-	flag.BoolVar(&keepOneLine, "keep-one-line", false, "替换转义符时保持每条日志在一行（将\\n替换为空格）")
-	flag.BoolVar(&trimSpace, "t", false, "修剪每行开头和结尾的空白字符")
-	flag.BoolVar(&trimSpace, "trim", false, "修剪每行开头和结尾的空白字符")
-	flag.BoolVar(&helpFlag, "h", false, "显示帮助信息")
-	flag.BoolVar(&helpFlag, "help", false, "显示帮助信息")
+	flag.BoolVar(&unescapeFlag, "u", false, descUnescape)
+	flag.BoolVar(&unescapeFlag, "unescape", false, descUnescape)
+	flag.BoolVar(&keepOneLine, "k", false, descKeepOneLine)
+	flag.BoolVar(&keepOneLine, "keep-one-line", false, descKeepOneLine)
+	flag.BoolVar(&trimSpace, "t", false, descTrimSpace)
+	flag.BoolVar(&trimSpace, "trim", false, descTrimSpace)
+	flag.BoolVar(&helpFlag, "h", false, descHelp)
+	flag.BoolVar(&helpFlag, "help", false, descHelp)
+}
+
+// printError 统一输出错误信息到标准错误
+func printError(format string, args ...interface{}) {
+	fmt.Fprintf(os.Stderr, format+"\n", args...)
+}
+
+// exitWithError 输出错误信息并退出程序
+func exitWithError(format string, args ...interface{}) {
+	printError(format, args...)
+	os.Exit(1)
 }
 
 func main() {
@@ -56,11 +105,10 @@ func main() {
 		filePath = flag.Arg(0)
 	}
 
-	// 如果没有指定文件，从标准输入读取
+	// 如果没有指定文件,从标准输入读取
 	if filePath == "" {
 		if err := processStream(os.Stdin); err != nil {
-			fmt.Fprintf(os.Stderr, "错误: %v\n", err)
-			os.Exit(1)
+			exitWithError(errMsgGeneric, err)
 		}
 		return
 	}
@@ -68,38 +116,37 @@ func main() {
 	// 打开文件
 	file, err := os.Open(filePath)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "无法打开文件 %s: %v\n", filePath, err)
-		os.Exit(1)
+		exitWithError(errMsgOpenFile, filePath, err)
 	}
-	file.Close() // 立即关闭，交互模式会重新打开
+	file.Close() // 立即关闭,交互模式会重新打开
 
 	// 检查是否是管道输出或非交互式终端
 	fileInfo, _ := os.Stdout.Stat()
 	if (fileInfo.Mode() & os.ModeCharDevice) == 0 {
-		// 输出被重定向，使用非交互模式
+		// 输出被重定向,使用非交互模式
 		file, err := os.Open(filePath)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "无法打开文件 %s: %v\n", filePath, err)
-			os.Exit(1)
+			exitWithError(errMsgOpenFile, filePath, err)
 		}
 		defer file.Close()
 		if err := processStream(file); err != nil {
-			fmt.Fprintf(os.Stderr, "读取文件错误: %v\n", err)
-			os.Exit(1)
+			exitWithError(errMsgReadFile, err)
 		}
 		return
 	}
 
 	// 默认使用交互式模式
 	if err := interactiveMode(filePath); err != nil {
-		fmt.Fprintf(os.Stderr, "错误: %v\n", err)
-		os.Exit(1)
+		exitWithError(errMsgGeneric, err)
 	}
 }
 
 // processStream 处理输入流并输出
 func processStream(reader io.Reader) error {
 	scanner := bufio.NewScanner(reader)
+	// 设置更大的缓冲区以处理超长行
+	buf := make([]byte, 0, 64*1024)
+	scanner.Buffer(buf, maxScanTokenSize)
 	lineNum := 1
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -109,12 +156,9 @@ func processStream(reader io.Reader) error {
 		if unescapeFlag {
 			line = unescapeString(line)
 		}
-		if showLineNumber {
-			// 使用青色（Cyan）显示行号
-			fmt.Printf("\033[36m%6d\033[0m  %s\n", lineNum, line)
-		} else {
-			fmt.Println(line)
-		}
+		// 使用青色（Cyan）显示行号
+		fmt.Printf("\033[36m%6d\033[0m  %s\n", lineNum, line)
+
 		lineNum++
 	}
 	return scanner.Err()
@@ -124,26 +168,10 @@ func processStream(reader io.Reader) error {
 func unescapeString(s string) string {
 	if keepOneLine {
 		// 保持在一行：将 \n 替换为空格
-		replacer := strings.NewReplacer(
-			"\\t", "\t",
-			"\\r", "",
-			"\\n", " ", // 替换为空格
-			"\\\\", "\\",
-			"\\\"", "\"",
-			"\\'", "'",
-		)
-		return replacer.Replace(s)
+		return escapeReplacerKeepOneLine.Replace(s)
 	} else {
 		// 正常替换：\n 替换为真正的换行符
-		replacer := strings.NewReplacer(
-			"\\n", "\n",
-			"\\t", "\t",
-			"\\r", "\r",
-			"\\\\", "\\",
-			"\\\"", "\"",
-			"\\'", "'",
-		)
-		return replacer.Replace(s)
+		return escapeReplacerNormal.Replace(s)
 	}
 }
 
@@ -188,6 +216,9 @@ func showFormattedJSON(filePath string, lineIndex []int64, lineNum int, width in
 	}
 
 	scanner := bufio.NewScanner(file)
+	// 设置更大的缓冲区以处理超长行
+	scanBuf := make([]byte, 0, 64*1024)
+	scanner.Buffer(scanBuf, maxScanTokenSize)
 	if !scanner.Scan() {
 		return fmt.Errorf("无法读取行内容")
 	}
@@ -700,6 +731,9 @@ func displayPage(filePath string, lineIndex []int64, startLine, totalLines, view
 	}
 
 	scanner := bufio.NewScanner(file)
+	// 设置更大的缓冲区以处理超长行
+	scanBuf := make([]byte, 0, 64*1024)
+	scanner.Buffer(scanBuf, maxScanTokenSize)
 
 	// 计算实际使用的终端行数
 	screenLinesUsed := 0
@@ -722,15 +756,10 @@ func displayPage(filePath string, lineIndex []int64, startLine, totalLines, view
 		// 计算这一行显示时会占用多少终端行
 		// 行号占用的宽度（如果显示行号）
 		linePrefix := ""
-		if showLineNumber {
-			linePrefix = fmt.Sprintf("\033[36m%6d\033[0m  ", i+1)
-		}
+		linePrefix = fmt.Sprintf("\033[36m%6d\033[0m  ", i+1)
 
 		// 计算内容宽度（考虑行号前缀的显示宽度，ANSI颜色码不占宽度）
 		prefixWidth := 8 // "  1234  " 的可见宽度
-		if !showLineNumber {
-			prefixWidth = 0
-		}
 
 		availableWidth := termWidth - prefixWidth
 		if availableWidth < 10 {
@@ -770,11 +799,7 @@ func displayPage(filePath string, lineIndex []int64, startLine, totalLines, view
 		}
 
 		// 显示这一行
-		if showLineNumber {
-			fmt.Printf("%s%s\r\n", linePrefix, line)
-		} else {
-			fmt.Printf("%s\r\n", line)
-		}
+		fmt.Printf("%s%s\r\n", linePrefix, line)
 
 		screenLinesUsed += linesNeeded
 		lastDisplayedLine = i // 更新实际显示的最后一行
@@ -848,6 +873,9 @@ func searchInFile(filePath string, totalLines int, pattern string) []int {
 	lowerPattern := strings.ToLower(pattern)
 
 	scanner := bufio.NewScanner(file)
+	// 设置更大的缓冲区以处理超长行
+	scanBuf := make([]byte, 0, 64*1024)
+	scanner.Buffer(scanBuf, maxScanTokenSize)
 	for i := 0; i < totalLines && scanner.Scan(); i++ {
 		line := scanner.Text()
 
