@@ -34,14 +34,8 @@ lg -h
 # 交互式查看日志（默认模式）
 lg app.log
 
-# 显示行号
-lg -l app.log
-
 # 替换转义符（适合 JSON 日志）
 lg -u -k app.log
-
-# 全功能模式：行号 + 转义符替换
-lg -l -u -k app.log
 
 # 从管道读取并替换转义符
 cat app.log | lg -u
@@ -58,7 +52,6 @@ tail -n 100 app.log | lg -u   # 查看最后 100 行
 
 | 参数 | 简写 | 说明 |
 |------|------|------|
-| `--line-number` | `-l` | 显示行号 |
 | `--unescape` | `-u` | 替换转义符（如 `\n`, `\t`, `\r` 等） |
 | `--keep-one-line` | `-k` | 配合 -u 使用，保持每条日志在一行（`\n`替换为空格） |
 | `--trim` | `-t` | 修剪每行开头和结尾的空白字符 |
@@ -94,9 +87,6 @@ tail -n 100 app.log | lg -u   # 查看最后 100 行
 ```bash
 # 基础用法
 lg large.log
-
-# 带行号
-lg -l large.log
 
 # 处理 JSON 日志
 lg -u -k app.log
@@ -188,16 +178,9 @@ lg -u -k app.log
 :1     # 跳转到第 1 行（等同于按 g）
 ```
 
-### 5. 显示行号
-
-```bash
-# 显示行号
-lg -l app.log
-```
-
 行号格式为右对齐 6 位数字，方便阅读。
 
-### 6. 转义符替换示例
+### 5. 转义符替换示例
 
 **原始日志内容（包含转义符）：**
 ```
@@ -277,7 +260,7 @@ lg -u -k test.log
 5. **配合其他命令使用**
    ```bash
    cat *.log | lg -u | grep ERROR
-   tail -n 100 app.log | lg -l
+   tail -n 100 app.log | lg
    ```
 
 
